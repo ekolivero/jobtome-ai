@@ -25,6 +25,10 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || "",
 });
 
+export const runtime = "edge";
+export const config = {
+  supportsResponseStreaming: true,
+};
 
 async function submitUserMessage({ content }: { content: string }) {
   "use server";
