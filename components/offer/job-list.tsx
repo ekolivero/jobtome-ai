@@ -5,10 +5,12 @@
  */
 import { Button } from "@/components/ui/button";
 
-type JobProps = {
+export type JobProps = {
   title: string;
   short_descr: string;
-  location: string;
+  geo: {
+    city: string;
+  };
   company: string;
 };
 
@@ -30,9 +32,9 @@ export default function JobList({ jobs }: JobListProps) {
               {j.company}
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {j.location}
+              {j.geo.city}
             </p>
-            <p className="text-sm mt-2">{j.short_descr}</p>
+            <p className="text-sm mt-2" dangerouslySetInnerHTML={{ __html: j.short_descr}} />
             <Button className="mt-4">Apply Now</Button>
           </div>
         </div>

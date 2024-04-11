@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { TabsList, TabsTrigger } from "./ui/tabs";
 
-export async function Header() {
+export function Header({ activeTab, setActiveTab, areNewOffers }: { activeTab: string, setActiveTab: (value: string) => void, areNewOffers: boolean}) {
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between w-full px-4 border-b h-14 shrink-0 bg-background backdrop-blur-xl">
-      <span className="inline-flex items-center home-links whitespace-nowrap">
+      <span className="items-center home-links whitespace-nowrap hidden md:inline-flex">
         <a href="https://vercel.com" rel="noopener" target="_blank">
           <IconVercel className="w-5 h-5 sm:h-6 sm:w-6" />
         </a>
@@ -24,28 +25,33 @@ export async function Header() {
           </span>
         </Link>
       </span>
-      <div className="flex items-center justify-end space-x-2">
-        <Button variant="outline" asChild>
-          <a
-            target="_blank"
-            href="https://github.com/vercel/ai/tree/main/examples/next-ai-rsc"
-            rel="noopener noreferrer"
-          >
-            <IconGitHub />
-            <span className="hidden ml-2 md:flex">GitHub</span>
-          </a>
-        </Button>
-        <Button asChild>
-          <a
-            href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fai%2Fblob%2Fmain%2Fexamples%2Fnext-ai-rsc&env=OPENAI_API_KEY&envDescription=OpenAI+API+Key&envLink=https%3A%2F%2Fplatform.openai.com%2Fapi-keys"
-            target="_blank"
-          >
-            <IconVercel className="mr-2" />
-            <span className="hidden sm:block">Deploy to Vercel</span>
-            <span className="sm:hidden">Deploy</span>
-          </a>
-        </Button>
-      </div>
+      <TabsList className="flex flex-1 md:hidden">
+        <TabsTrigger
+          value="chat"
+          className={`text-zinc-600 dark:text-zinc-200 ${
+            activeTab === "chat" && "w-full"
+          }`}
+          onClick={() => setActiveTab("chat")}
+        >
+          Chat
+        </TabsTrigger>
+        <TabsTrigger
+          value="offers"
+          className={`text-zinc-600 dark:text-zinc-200 ${
+            activeTab === "offers" && "w-full"
+          }`}
+          onClick={() => {
+            setActiveTab("offers");
+          }}
+        >
+          Offers
+          {areNewOffers ? (
+            <span className="flex h-3 w-3 ml-2 rounded-full bg-blue-600 animate-pulse" />
+          ) : (
+            <span className="flex h-2 w-2 ml-2 rounded-full bg-gray-300" />
+          )}
+        </TabsTrigger>
+      </TabsList>
     </header>
   );
 }

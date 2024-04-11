@@ -55,6 +55,9 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      blur: {
+        xs: '1px',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
