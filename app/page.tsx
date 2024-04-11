@@ -1,7 +1,10 @@
 import { Dashboard } from "@/components/chat-dashboard";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <Dashboard />
+    <Suspense>
+      <Dashboard />
+    </Suspense>
   );
 }

@@ -97,61 +97,61 @@ export function ChatPanel({
               )}
               onClick={async () => {
                 if (index === 1) {
-                    setMessages((currentMessages) => [
-                      ...currentMessages,
-                      {
-                        id: nanoid(),
-                        display: (
-                          <BotMessage>
-                            I'm glad you' re looking for a new job opportunity!
-                            I can help you with that. 🚀
-                            <p className="text-forground mt-4 mb-4">
-                              {" "}
-                              Here some suggestions
-                            </p>
-                            <div className="flex flex-1 flex-row gap-2">
-                              {pickThreeUniqueValues(suggestedPositions).map(
-                                (e, idx) => (
-                                  <Badge
-                                    key={idx}
-                                    className="text-xs p-2 text-center rounded-lg bg-yellow-500 text-black whitespace-nowrap"
-                                    onClick={async () => {
-                                        setMessages((currentMessages) => [
-                                          ...currentMessages,
-                                          {
-                                            id: nanoid(),
-                                            display: (
-                                              <UserMessage>
-                                                I'd like to work as {e}
-                                              </UserMessage>
-                                            ),
-                                          },
-                                        ]);
+                setMessages((currentMessages: any) => [
+                  ...currentMessages,
+                  {
+                    id: nanoid(),
+                    display: (
+                      <BotMessage>
+                        I&apos;m glad you&apos;re looking for a new job
+                        opportunity! I can help you with that. 🚀
+                        <p className="text-forground mt-4 mb-4">
+                          {" "}
+                          Here some suggestions
+                        </p>
+                        <div className="flex flex-1 flex-row gap-2">
+                          {pickThreeUniqueValues(suggestedPositions).map(
+                            (e, idx) => (
+                              <Badge
+                                key={idx}
+                                className="text-xs p-2 text-center rounded-lg bg-yellow-500 text-black whitespace-nowrap"
+                                onClick={async () => {
+                                  setMessages((currentMessages: any) => [
+                                    ...currentMessages,
+                                    {
+                                      id: nanoid(),
+                                      display: (
+                                        <UserMessage>
+                                          I&apos;d like to work as {e}
+                                        </UserMessage>
+                                      ),
+                                    },
+                                  ]);
 
-                                        const responseMessage =
-                                          await submitUserMessage({
-                                            content: `I'd like to work as ${e}`
-                                          });
+                                  const responseMessage =
+                                    await submitUserMessage({
+                                      content: `I'd like to work as ${e}`,
+                                    });
 
-                                        setMessages((currentMessages) => [
-                                          ...currentMessages,
-                                          responseMessage,
-                                        ]);
-                                    }}
-                                  >
-                                    {e}
-                                  </Badge>
-                                )
-                              )}
-                            </div>
-                          </BotMessage>
-                        ),
-                      },
-                    ]);
+                                  setMessages((currentMessages: any) => [
+                                    ...currentMessages,
+                                    responseMessage,
+                                  ]);
+                                }}
+                              >
+                                {e}
+                              </Badge>
+                            )
+                          )}
+                        </div>
+                      </BotMessage>
+                    ),
+                  },
+                ]);
 
                     return
                 }
-                setMessages((currentMessages) => [
+                setMessages((currentMessages: any) => [
                   ...currentMessages,
                   {
                     id: nanoid(),
@@ -163,7 +163,7 @@ export function ChatPanel({
                   content: example.message,
                 });
 
-                setMessages((currentMessages) => [
+                setMessages((currentMessages: any) => [
                   ...currentMessages,
                   responseMessage,
                 ]);
