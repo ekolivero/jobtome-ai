@@ -121,27 +121,7 @@ export function Dashboard() {
                       <ChatList messages={messages} />
                     </>
                   ) : (
-                    <EmptyScreen
-                      submitMessage={async (message) => {
-                        // Add user message UI
-                        setMessages((currentMessages) => [
-                          ...currentMessages,
-                          {
-                            id: Date.now(),
-                            display: <UserMessage>{message}</UserMessage>,
-                          },
-                        ]);
-
-                        // Submit and get response message
-                        const responseMessage = await submitUserMessage({
-                          content: message,
-                        });
-                        setMessages((currentMessages) => [
-                          ...currentMessages,
-                          responseMessage,
-                        ]);
-                      }}
-                    />
+                    <EmptyScreen />
                   )}
                 </div>
                 <ChatScrollAnchor trackVisibility={true} />
@@ -258,27 +238,7 @@ export function Dashboard() {
                       </div>
                     ) : (
                       <div className="pb-[200px] pt-4">
-                        <EmptyScreen
-                          submitMessage={async (message) => {
-                            // Add user message UI
-                            setMessages((currentMessages) => [
-                              ...currentMessages,
-                              {
-                                id: Date.now(),
-                                display: <UserMessage>{message}</UserMessage>,
-                              },
-                            ]);
-
-                            // Submit and get response message
-                            const responseMessage = await submitUserMessage({
-                              content: message,
-                            });
-                            setMessages((currentMessages) => [
-                              ...currentMessages,
-                              responseMessage,
-                            ]);
-                          }}
-                        />
+                        <EmptyScreen />
                       </div>
                     )}
                     <div className="fixed inset-x-0 bottom-0 w-full duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10%">
