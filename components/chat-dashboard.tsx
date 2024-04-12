@@ -392,7 +392,7 @@ export function Dashboard() {
                         )}
                       </div>
                       <ChatScrollAnchor trackVisibility={true} />
-                      <ChatPanel setMessages={setMessages} submitUserMessage={submitUserMessage} messages={messages} />
+                      <ChatPanel setMessages={setMessages} submitUserMessage={submitUserMessage} messages={messages} setInput={setInputValue} />
                       <div className="fixed inset-x-0 bottom-0 mx-auto max-w-screen-sm">
                       <form
                         ref={formRef}

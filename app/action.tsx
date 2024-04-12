@@ -25,6 +25,10 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || "",
 });
 
+export const runtime = "edge";
+export const config = {
+  supportsResponseStreaming: true,
+};
 
 async function submitUserMessage({ content }: { content: string }) {
   "use server";
@@ -65,7 +69,10 @@ async function submitUserMessage({ content }: { content: string }) {
         DO NOT ask for more information on optional parameters if it is not provided.
 
         You are an AI assistant for jobtome, a company that aggregates job offers from different sources. Your goal is to help the user
-        find the right job offer or address their questions about the job market. 
+        find the right job offer or address their questions about the job market.
+
+        IMPORTANT: Remember and act based on this: this service is available only for UK. You should tell to the user only when they are asking for
+        positions or locations outside UK.
 
         Here some examples of questions you can answer:
         - I'd like to work in the hospitality do you have any suggestion?
@@ -148,13 +155,13 @@ async function submitUserMessage({ content }: { content: string }) {
 
     if (JSONResponse.data.length > 0) {
       responseOffers.done(
-        <BotMessage> Here some must check offers for you </BotMessage>
+        <BotMessage className="md:hidden"> Here some must check offers for you </BotMessage>
       );
     } else {
       responseOffers.done()
     }
 
-    carousel.done(<CarouselList j={JSONResponse.data.slice(0, 5)} /> )
+    carousel.done(<CarouselList j={JSONResponse.data.slice(0, 3)} /> )
 
     let fullResponse = "";
     for await (const delta of result.textStream) {

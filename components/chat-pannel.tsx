@@ -40,11 +40,13 @@ function pickThreeUniqueValues(list: string[]) {
 export function ChatPanel({
   messages,
   setMessages,
-  submitUserMessage
+  submitUserMessage,
+  setInput
 }: {
     messages: any,
     setMessages: any,
     submitUserMessage: any
+    setInput: any
 }) {
 
     const suggestedPositions = [
@@ -109,12 +111,12 @@ export function ChatPanel({
                           {" "}
                           Here some suggestions
                         </p>
-                        <div className="flex flex-1 flex-row gap-2">
+                        <div className="flex flex-1 flex-col gap-2 mb-2">
                           {pickThreeUniqueValues(suggestedPositions).map(
                             (e, idx) => (
                               <Badge
                                 key={idx}
-                                className="text-xs p-2 text-center rounded-lg bg-yellow-500 text-black whitespace-nowrap"
+                                className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-zinc-100 text-zinc-950 justify-center cursor-pointer hover:bg-zinc-200 transition-colors shadow-none"
                                 onClick={async () => {
                                   setMessages((currentMessages: any) => [
                                     ...currentMessages,
@@ -143,6 +145,17 @@ export function ChatPanel({
                               </Badge>
                             )
                           )}
+                          <div className="flex flex-1 flex-col">
+                            <Badge
+                              key={"search-more"}
+                              className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-zinc-100 text-zinc-950 justify-center cursor-pointer hover:bg-zinc-200 transition-colors shadow-none"
+                              onClick={async () => {
+                                setInput("I'd like to work as ...");
+                              }}
+                            >
+                              Let me type it
+                            </Badge>
+                          </div>
                         </div>
                       </BotMessage>
                     ),
