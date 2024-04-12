@@ -115,6 +115,8 @@ async function submitUserMessage({ content }: { content: string }) {
       reply.done();
       isGenerating.done(false);
       offers.done(null)
+      responseOffers.done()
+      carousel.done()
       aiState.done([...aiState.get(), { role: "assistant", content }]);
     }
   });
