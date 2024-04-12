@@ -3,7 +3,6 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Providers from "@/components/providers";
-import { Header } from "@/components/header";
 import { AI } from "./action";
 import type { Viewport } from "next";
 
