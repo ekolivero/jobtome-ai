@@ -3,7 +3,15 @@
  * @see https://v0.dev/t/NXzBPtQmYoJ
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { Button } from "@/components/ui/button";
+'use client'
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import { Button } from "../ui/button";
+import { HeartIcon, Share2Icon } from "lucide-react";
 
 export type JobProps = {
   title: string;
@@ -12,6 +20,7 @@ export type JobProps = {
     city: string;
   };
   company: string;
+  url: string;
 };
 
 type JobListProps = {
@@ -34,7 +43,53 @@ export default function JobList({ jobs }: JobListProps) {
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {j.geo.city}
             </p>
-            <p className="text-sm mt-2" dangerouslySetInnerHTML={{ __html: j.short_descr}} />
+            <p
+              className="text-sm mt-2"
+              dangerouslySetInnerHTML={{ __html: j.short_descr }}
+            />
+            <div className="flex flex-row">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  asChild
+                  onClick={(e) => {
+                    if (navigator.share) {
+                      navigator
+                        .share({
+                          title: j.title,
+                          text: "Check out this interesting job offer:",
+                          url: j.url,
+                        })
+                        .then(() => console.log("Successful share"))
+                        .catch((error) => console.log("Error sharing:", error));
+                    } else {
+                      alert("Your browser does not support the share API.");
+                    }
+                  }}
+                >
+                  <Button size="icon" variant="ghost">
+                    <Share2Icon className="size-4" />
+                    <span className="sr-only">Share offer</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top">Share offer</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger
+                  asChild
+                  onClick={(e) => {
+                    console.log("Do something");
+                  }}
+                >
+                  <Button size="icon" variant="ghost">
+                    <HeartIcon className="size-4" />
+                    <span className="sr-only">Share offer</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top">Share offer</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            </div>
             <Button className="mt-4">Apply Now</Button>
           </div>
         </div>

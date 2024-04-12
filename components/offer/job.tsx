@@ -1,7 +1,7 @@
+'use client'
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Button } from "../ui/button";
-import { Share1Icon } from "@radix-ui/react-icons";
-import { HeartIcon, SaveIcon, Share2Icon } from "lucide-react";
+import { HeartIcon, Share2Icon } from "lucide-react";
 
 export type JobProps = {
   title: string;
@@ -10,11 +10,9 @@ export type JobProps = {
     city: string;
   };
   company: string;
+  url: string;
 };
 
-type JobListProps = {
-  jobs: JobProps[];
-};
 
 export default function Job({ j }: { j: JobProps} ) {
     return (
@@ -33,9 +31,9 @@ export default function Job({ j }: { j: JobProps} ) {
                 if (navigator.share) {
                   navigator
                     .share({
-                      title: "Example Page",
-                      text: "Check out this interesting webpage!",
-                      url: window.location.href,
+                      title: j.title,
+                      text: "Check out this interesting job offer:",
+                      url: j.url
                     })
                     .then(() => console.log("Successful share"))
                     .catch((error) => console.log("Error sharing:", error));
