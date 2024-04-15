@@ -41,12 +41,14 @@ export function ChatPanel({
   messages,
   setMessages,
   submitUserMessage,
-  setInput
+  setInput,
+  inputRef
 }: {
-    messages: any,
-    setMessages: any,
+    messages: any
+    setMessages: any
     submitUserMessage: any
     setInput: any
+    inputRef: any
 }) {
 
     const suggestedPositions = [
@@ -76,19 +78,19 @@ export function ChatPanel({
 
     const exampleMessages = [
       {
-        heading: "Search a job 🔎",
+        heading: "Find me a job 🔎",
         subheading: "Looking for a new job position",
         message: "Looking for a new job position",
       },
       {
         heading: "Inspire me ⚡️",
-        subheading: "I'm open to your suggestions",
+        subheading: "I'm open to your job suggestions",
         message: `Inspire and propose me a new job opportunity in London.`,
       },
     ];
 
     return (
-      <div className="mb-4 grid sm:grid-cols-2 gap-2 sm:gap-4 px-4 sm:px-0">
+      <div className="grid sm:grid-cols-2 gap-2 sm:gap-4 px-4 sm:px-0 pb-4">
         {messages.length === 0 &&
           exampleMessages.map((example, index) => (
             <div
@@ -124,7 +126,8 @@ export function ChatPanel({
                                       id: nanoid(),
                                       display: (
                                         <UserMessage>
-                                          I&apos;d like to work as {e}
+                                          I&apos;m looking for a job opening as{" "}
+                                          {e}
                                         </UserMessage>
                                       ),
                                     },
@@ -132,7 +135,7 @@ export function ChatPanel({
 
                                   const responseMessage =
                                     await submitUserMessage({
-                                      content: `I'd like to work as ${e}`,
+                                      content: `I'm looking for a job opening as ${e}`,
                                     });
 
                                   setMessages((currentMessages: any) => [
@@ -150,10 +153,11 @@ export function ChatPanel({
                               key={"search-more"}
                               className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-zinc-100 text-zinc-950 justify-center cursor-pointer hover:bg-zinc-200 transition-colors shadow-none"
                               onClick={async () => {
-                                setInput("I'd like to work as ...");
+                                setInput("I'm looking for a job opening as ");
+                                inputRef.current.focus();
                               }}
                             >
-                              Let me type it
+                              I&apos;ll type it
                             </Badge>
                           </div>
                         </div>
