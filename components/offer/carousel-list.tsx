@@ -13,13 +13,22 @@ import {
 import Job, { JobProps } from "./job";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
+import { useActions } from "ai/rsc";
+import { AI } from "@/app/action";
+import { useUIState } from "ai/rsc";
+import { spinner } from ".";
 
-
-export function CarouselList({ j }: { j: JobProps[]}) {
+export function CarouselList({ j, keyword, location, additionalInformation }: { j: JobProps[], keyword: string, location: string, additionalInformation: string[]}) {
 
     const [api, setApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
     const [count, setCount] = React.useState(0);
+
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    const [_, setMessages] = useUIState();
+
+    const { submitFollowUp } = useActions<typeof AI>();
 
     React.useEffect(() => {
         if (!api) {
@@ -57,8 +66,23 @@ export function CarouselList({ j }: { j: JobProps[]}) {
             <h3 className="text-lg text-gray-500 dark:text-gray-400">
               Click on the button below
             </h3>
-            <Button variant={"outline"} className="mt-6 text-xs">
+            <Button variant={"outline"} className="mt-4 text-xs">
               See all offers 
+            </Button>
+            <Button variant={"outline"} className="mt-2 text-xs" onClick={async () => {
+              setIsLoading(true)
+              const response = await submitFollowUp({
+                keyword,
+                location,
+                additionalInformation
+              })
+              setIsLoading(false)
+              setMessages((currentMessages: any[]) => [
+                ...currentMessages,
+                response
+              ])
+            }}>
+              {isLoading && spinner} { "  " } More specific offers
             </Button>
           </div>
         </CarouselItem>

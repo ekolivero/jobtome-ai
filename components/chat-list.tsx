@@ -13,6 +13,7 @@ export function ChatList({ messages }: { messages: any[] }) {
             {message.responseOffers}
             {message.carousel}
             {message.display}
+            {message.followup}
           </div>
         );})}
     </div>

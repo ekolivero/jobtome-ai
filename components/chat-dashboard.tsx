@@ -36,6 +36,8 @@ export function Dashboard() {
   const [isFeedback, setIsFeedback] = useState(false);
   const [feedbackValue, setFeedbackValue] = useState("");
 
+  const [audioMessage, setAudioMessage] = useState<string | null>(null);
+
   const [offersComponent, setOffersComponent] = useState<ReactNode>(null);
 
   const { submitUserMessage } = useActions<typeof AI>();
@@ -58,6 +60,15 @@ export function Dashboard() {
     },
     onSwipedRight: () => setActiveTab("chat"),
   });
+
+  console.log(audioMessage)
+
+  useEffect(() => {
+
+    if (!audioMessage) return
+
+    setInputValue(audioMessage ?? "ciao a tutti")
+  }, [audioMessage])
 
   useEffect(() => {
     async function triggerActionWithInitialData() {
@@ -250,6 +261,7 @@ export function Dashboard() {
                             submitUserMessage={submitUserMessage}
                             messages={messages}
                             setInput={setInputValue}
+                            inputRef={inputRef}
                           />
                         )}
 

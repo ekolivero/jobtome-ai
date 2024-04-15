@@ -10,6 +10,8 @@ import {
 
 import {
   runOpenAICompletion,
+  runAsyncFnWithoutBlocking,
+  sleep
 } from '@/lib/openai';
 import { z } from "zod";
 import { experimental_streamObject, experimental_streamText } from "ai";
@@ -20,6 +22,9 @@ import { SkeletonList } from "@/components/skeleton-list";
 import Job from "@/components/offer/job";
 import { CarouselList } from "@/components/offer/carousel-list";
 import { offers as jsonOffers } from "@/lib/offer";
+
+import { submitFollowUp } from "./follow-up";
+import { submitCompanyInformation } from "./company";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || "",
@@ -137,45 +142,32 @@ async function submitUserMessage({ content }: { content: string }) {
       </BotMessage>
     );
 
-    const result = await experimental_streamText({
-      model: chatOpenAI.chat("gpt-4-turbo-preview"),
-      system: `\
-      You are an AI assistant for jobtome, a company that aggregates job offers from different sources.
-      The user has requested for a position and a location, your goal is to provide a followup message to narrow down the job search.
-      Provide a short and concise message, do not present or compliment, do not repeat the prompt. Let the user know that offers are 
-      already available. The followup message should be short and concise. Once thing at the time.
-    `,
-      prompt: `I'd like to work as ${keyword} in ${location} with ${additionalInformation.join(", ")}.`,
-    });
-
     const enhancedKeyword = keyword + " " + additionalInformation.join(" ");
     const response = await fetch(
       `https://search-apis.eu.jobtome.io/search?country=uk&query=${enhancedKeyword}&location=${location}&radius=25&limit=40&algorithm=semantic`
     );
 
-    const JSONResponse = jsonOffers
+    const JSONResponse = await response.json();
 
     if (JSONResponse.data.length > 0) {
       responseOffers.done(
-        <BotMessage className="md:hidden"> Here some must check offers for you </BotMessage>
+        <BotMessage className="md:hidden">
+          {" "}
+          Here some must check offers for you{" "}
+        </BotMessage>
       );
     } else {
-      responseOffers.done()
+      responseOffers.done();
     }
 
-    carousel.done(<CarouselList j={JSONResponse.data.slice(0, 3)} /> )
+    carousel.done(<CarouselList j={JSONResponse.data.slice(0, 3)} keyword={keyword} location={location} additionalInformation={additionalInformation} /> )
 
-    let fullResponse = "";
-    for await (const delta of result.textStream) {
-      fullResponse += delta;
-      reply.update(<BotMessage>{fullResponse} </BotMessage>);
-    }
 
     offers.done(
       <JobList jobs={JSONResponse.data} />
     )
 
-    reply.done()
+    reply.done("")
 
     aiState.done([
       ...aiState.get(),
@@ -215,11 +207,16 @@ const initialUIState: {
   isGenerating?: StreamableValue<boolean>;
   carousel?: React.ReactNode;
   responseOffers?: React.ReactNode;
+  followup?: React.ReactNode;
+  companyInformation?: React.ReactNode;
+  isCompanyGenerating?: StreamableValue<boolean>;
 }[] = [];
 
 export const AI = createAI({
   actions: {
     submitUserMessage,
+    submitFollowUp,
+    submitCompanyInformation
   },
   initialUIState,
   initialAIState,
