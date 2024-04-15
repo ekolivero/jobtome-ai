@@ -147,7 +147,7 @@ async function submitUserMessage({ content }: { content: string }) {
       `https://search-apis.eu.jobtome.io/search?country=uk&query=${enhancedKeyword}&location=${location}&radius=25&limit=40&algorithm=semantic`
     );
 
-    const JSONResponse = await response.json();
+    const JSONResponse = jsonOffers
 
     if (JSONResponse.data.length > 0) {
       responseOffers.done(
